@@ -19,7 +19,7 @@ veracode_static_scan:
     script:
         # the scan WILL fail, so just fire and forget
         - java -jar /opt/veracode/api-wrapper.jar -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET
-            -action UploadAndScan -appname "Verademo" -createprofile false
+            -action UploadAndScan -appname "VerademoTest" -createprofile false
             -filepath app/target/verademo.war -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
     allow_failure: true
 
