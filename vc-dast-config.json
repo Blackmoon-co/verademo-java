@@ -1,0 +1,30 @@
+{
+  "name": "VeraDemo-Java-GitHub",
+  "scan_setting": {
+    "max_browsers": 10
+  },
+  "scanner_variables": [
+    {
+      "reference_key": "string",
+      "value": "string",
+      "description": "string"
+    }
+  ], 
+  "scans": [
+    {
+      "scan_config_request": {
+        "target_url": {
+          "url": "https://verademo-java.vc-labs.cloud"
+        }
+      }
+    }
+  ],
+  "schedule": {
+    "duration": {
+      "length": 30,
+      "unit": "MINUTE"
+    },
+    "scheduled": true,
+    "now": true
+  }
+}

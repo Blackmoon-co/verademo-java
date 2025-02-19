@@ -1,0 +1,199 @@
+
+Scan Summary:
+PIPELINE_SCAN_VERSION: 23.6.0-0
+DEV-STAGE: DEVELOPMENT
+SCAN_ID: 19d07269-a46e-42f4-9a27-d4d2eb87d017
+SCAN_STATUS: SUCCESS
+SCAN_MESSAGE: Scan successful. Results size: 385395 bytes
+====================
+Analysis Successful.
+====================
+
+==========================
+Found 2 Scannable modules.
+==========================
+verademo.war
+JS files within verademo.war
+
+===================
+Analyzed 2 modules.
+===================
+verademo.war
+JS files within verademo.war
+
+====================
+Analyzed 174 issues.
+====================
+-------------------------------------
+Found 2 issues of Very High severity.
+-------------------------------------
+CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection'): com/veracode/verademo/controller/ToolsController.java:53
+CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection'): com/veracode/verademo/controller/ToolsController.java:83
+---------------------------------
+Found 14 issues of High severity.
+---------------------------------
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/controller/UserController.java:170
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/controller/UserController.java:266
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/controller/UserController.java:327
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/controller/UserController.java:391
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/controller/UserController.java:496
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/controller/UserController.java:507
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/controller/BlabController.java:467
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/commands/RemoveAccountCommand.java:42
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/commands/RemoveAccountCommand.java:49
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/commands/RemoveAccountCommand.java:53
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/commands/ListenCommand.java:40
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/commands/ListenCommand.java:47
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/commands/IgnoreCommand.java:40
+CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection'): com/veracode/verademo/commands/IgnoreCommand.java:47
+-----------------------------------
+Found 96 issues of Medium severity.
+-----------------------------------
+CWE-113: Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting'): com/veracode/verademo/utils/Utils.java:55
+CWE-502: Deserialization of Untrusted Data: com/veracode/verademo/utils/UserFactory.java:43
+CWE-327: Use of a Broken or Risky Cryptographic Algorithm: com/veracode/verademo/utils/User.java:103
+CWE-259: Use of Hard-coded Password: com/veracode/verademo/utils/Constants.java:1
+CWE-259: Use of Hard-coded Password: com/veracode/verademo/utils/Constants.java:13
+CWE-601: URL Redirection to Untrusted Site ('Open Redirect'): com/veracode/verademo/controller/UserController.java:86
+CWE-601: URL Redirection to Untrusted Site ('Open Redirect'): com/veracode/verademo/controller/UserController.java:98
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:245
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:252
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:264
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:270
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): com/veracode/verademo/controller/UserController.java:271
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): com/veracode/verademo/controller/UserController.java:276
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:392
+CWE-73: External Control of File Name or Path: com/veracode/verademo/controller/UserController.java:415
+CWE-93: Improper Neutralization of CRLF Sequences ('CRLF Injection'): com/veracode/verademo/controller/UserController.java:436
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:494
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:505
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:558
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:644
+CWE-73: External Control of File Name or Path: com/veracode/verademo/controller/UserController.java:646
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:674
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:678
+CWE-73: External Control of File Name or Path: com/veracode/verademo/controller/UserController.java:683
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:692
+CWE-113: Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting'): com/veracode/verademo/controller/UserController.java:695
+CWE-113: Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting'): com/veracode/verademo/controller/UserController.java:697
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:777
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/UserController.java:831
+CWE-73: External Control of File Name or Path: com/veracode/verademo/controller/UserController.java:835
+CWE-327: Use of a Broken or Risky Cryptographic Algorithm: com/veracode/verademo/controller/UserController.java:925
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/ToolsController.java:49
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/ResetController.java:108
+CWE-331: Insufficient Entropy: com/veracode/verademo/controller/ResetController.java:127
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/ResetController.java:131
+CWE-331: Insufficient Entropy: com/veracode/verademo/controller/ResetController.java:152
+CWE-331: Insufficient Entropy: com/veracode/verademo/controller/ResetController.java:155
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/ResetController.java:158
+CWE-331: Insufficient Entropy: com/veracode/verademo/controller/ResetController.java:178
+CWE-331: Insufficient Entropy: com/veracode/verademo/controller/ResetController.java:182
+CWE-331: Insufficient Entropy: com/veracode/verademo/controller/ResetController.java:186
+CWE-331: Insufficient Entropy: com/veracode/verademo/controller/ResetController.java:190
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/ResetController.java:192
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:60
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): com/veracode/verademo/controller/BlabController.java:196
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:213
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:278
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:373
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:444
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:523
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:530
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/controller/BlabController.java:531
+CWE-470: Use of Externally-Controlled Input to Select Classes or Code ('Unsafe Reflection'): com/veracode/verademo/controller/BlabController.java:543
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/commands/RemoveAccountCommand.java:41
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/commands/RemoveAccountCommand.java:48
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/commands/RemoveAccountCommand.java:52
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/commands/ListenCommand.java:39
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/commands/ListenCommand.java:46
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/commands/IgnoreCommand.java:39
+CWE-117: Improper Output Neutralization for Logs: com/veracode/verademo/commands/IgnoreCommand.java:46
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/tools.jsp:64
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/tools.jsp:67
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/tools.jsp:77
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/register.jsp:59
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/register.jsp:86
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/register-finish.jsp:59
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/register-finish.jsp:82
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:62
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:90
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:101
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:110
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:119
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:160
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:163
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:200
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/login.jsp:59
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/login.jsp:78
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/login.jsp:85
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/feed.jsp:58
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/feed.jsp:69
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/feed.jsp:93
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/feed.jsp:96
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/feed.jsp:98
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/feed.jsp:141
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blabbers.jsp:65
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blabbers.jsp:100
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blabbers.jsp:103
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blab.jsp:56
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blab.jsp:60
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blab.jsp:68
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blab.jsp:104
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blab.jsp:108
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/blab.jsp:110
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:247
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/profile.jsp:252
+CWE-80: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS): WEB-INF/views/feed.jsp:174
+--------------------------------
+Found 42 issues of Low severity.
+--------------------------------
+CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute: com/veracode/verademo/utils/Utils.java:55
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:89
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:101
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:160
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:261
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:300
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:323
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:375
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:415
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:459
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:471
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:569
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:671
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:695
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:747
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/UserController.java:801
+CWE-209: Information Exposure Through an Error Message: com/veracode/verademo/controller/UserController.java:915
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/UserController.java:915
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/ResetController.java:99
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/ResetController.java:242
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/ResetController.java:259
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/HomeController.java:20
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/BlabController.java:57
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/BlabController.java:69
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/BlabController.java:175
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/BlabController.java:211
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/BlabController.java:223
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/BlabController.java:275
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/BlabController.java:293
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/BlabController.java:370
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/BlabController.java:382
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/BlabController.java:441
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/BlabController.java:460
+CWE-201: Information Exposure Through Sent Data: com/veracode/verademo/controller/BlabController.java:520
+CWE-245: J2EE Bad Practices: Direct Management of Connections: com/veracode/verademo/controller/BlabController.java:540
+CWE-209: Information Exposure Through an Error Message: WEB-INF/views/register.jsp:59
+CWE-209: Information Exposure Through an Error Message: WEB-INF/views/register-finish.jsp:59
+CWE-209: Information Exposure Through an Error Message: WEB-INF/views/profile.jsp:62
+CWE-209: Information Exposure Through an Error Message: WEB-INF/views/login.jsp:59
+CWE-209: Information Exposure Through an Error Message: WEB-INF/views/feed.jsp:69
+CWE-209: Information Exposure Through an Error Message: WEB-INF/views/blabbers.jsp:65
+CWE-209: Information Exposure Through an Error Message: WEB-INF/views/blab.jsp:68
+---------------------------------------------
+Skipping 20 issues of Informational severity.
+---------------------------------------------
+
+==========================
+FAILURE: Found 154 issues!
+==========================

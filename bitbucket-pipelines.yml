@@ -1,0 +1,31 @@
+image: veracode/scm-packaging:3.0.0
+
+pipelines:
+  default:
+    - step:
+        name: Package
+        caches: # Update to reflect your build system https://support.atlassian.com/bitbucket-cloud/docs/cache-dependencies/
+          - maven
+        script:
+          - echo "Installing Veracode CLI"
+          - mkdir /tmp/veracode-cli
+          - cd /tmp/veracode-cli
+          - curl -fsS https://tools.veracode.com/veracode-cli/install | sh
+          - ./veracode version
+          - cd $BITBUCKET_CLONE_DIR
+          - /tmp/veracode-cli/veracode package -s . -o veracode-packages -a
+        artifacts: # defining the artifacts to be passed to each future step.
+          - veracode-packages/**
+    - parallel:  
+        - step:
+            name: Veracode SCA
+            caches: # Update to reflect your build system
+            - maven
+            script:
+              - curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan --recursive
+        - step:
+            name: Veracode Static
+            image: 
+                name: veracode/api-wrapper-java:latest
+            script:
+              - java -jar /opt/veracode/api-wrapper.jar -action uploadandscan -vid $VERACODE_API_ID -vkey $VERACODE_API_KEY -appname BitBucket/$BITBUCKET_REPO_FULL_NAME -createprofile true -version $(date +%Y-%m-%d_%H:%M:%S)-$BITBUCKET_BUILD_NUMBER -filepath veracode-packages/
