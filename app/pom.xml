@@ -4,7 +4,7 @@
 	<groupId>com.veracode</groupId>
 	<artifactId>verademo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>verademoTest</name>
+	<name>verademo</name>
 	<url>https://github.com/veracode/verademo</url>
 	<packaging>war</packaging>
 
