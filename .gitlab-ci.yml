@@ -1,3 +1,5 @@
+image: veracode/veracode-cli
+
 stages:
   - security_scan
 
