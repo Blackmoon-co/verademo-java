@@ -1,0 +1,166 @@
+swagger: '2.0'
+info:
+  title: ValidationFlowInitCurus
+  x-ibm-name: validationflowinitcurus
+  version: 2.0.0
+schemes:
+  - https
+basePath: /v2/validation
+produces:
+  - application/json
+consumes:
+  - application/json
+security:
+  - OAuth2: []
+    clientID: []
+securityDefinitions:
+  OAuth2:
+    type: oauth2
+    flow: password
+    x-ibm-oauth-provider: oauth-core-login
+    tokenUrl: >-
+      https://190.243.30.245:8543/auth/realms/desa-SecurityPass/protocol/openid-connect/token
+    scopes:
+      scope_1: Sample scope description 1
+  clientID:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+x-ibm-configuration:
+  cors:
+    enabled: true
+  gateway: datapower-gateway
+  type: rest
+  phase: realized
+  enforced: true
+  testable: true
+  assembly:
+    execute:
+      - activity-log:
+          version: 1.0.0
+          title: activity-log
+          content: activity
+          error-content: payload
+      - validate:
+          version: 1.0.0
+          title: validate
+          definition: '#/definitions/Body'
+      - gatewayscript:
+          version: 1.0.0
+          title: gatewayscript
+          source: >-
+            apim.setvariable("message.headers.Authorization","");
+
+            apim.setvariable("message.headers.x-introspect-basic-authorization-header","");
+
+            apim.setvariable("message.headers.X-IBM-Client-Id","");
+      - switch:
+          version: 1.0.0
+          title: switch
+          case:
+            - condition: ((request.verb==='POST')&&(api.operation.path==='/flow/init'))
+              execute:
+                - proxy:
+                    title: proxy
+                    version: 1.0.0
+                    verb: keep
+                    target-url: $(target-url)/api/v3/validation/flow/init
+                    stop-on-error:
+                      - ConnectionError
+                      - OperationError
+      - activity-log:
+          version: 1.0.0
+          title: activity-log
+          content: activity
+          error-content: payload
+    catch:
+      - errors:
+          - ValidateError
+        execute:
+          - gatewayscript:
+              version: 1.0.0
+              title: gatewayscript
+              source: 'apim.setvariable("message.status.code",500)'
+          - map:
+              version: 1.0.0
+              title: map
+              inputs: {}
+              outputs:
+                output:
+                  schema:
+                    $ref: '#/definitions/Body'
+                  variable: message.body
+                  content: application/json
+              actions:
+                - set: output.status.code
+                  value: '"3"'
+                - set: output.status.message
+                  value: '"Error Validacion"'
+  properties:
+    target-url:
+      value: 'http://10.16.72.130:8080/curus-frk-mobile'
+      description: The URL of the target service
+      encoded: false
+    suppress-parameters:
+      value: client_id
+  application-authentication:
+    certificate: false
+  catalogs: {}
+definitions:
+  Body:
+    type: object
+    additionalProperties: false
+    properties:
+      status:
+        $ref: '#/definitions/Status_Type'
+        properties: {}
+      ipAddress:
+        type:
+          - string
+          - 'null'
+      appId:
+        type:
+          - string
+          - 'null'
+      payload:
+        $ref: '#/definitions/EncryptedPayload_Type'
+        properties: {}
+  EncryptedPayload_Type:
+    type: object
+    additionalProperties: false
+    properties:
+      algorithm:
+        type: string
+      data:
+        type: string
+      objectType:
+        type: string
+  Status_Type:
+    type: object
+    description: Estructura Status
+    additionalProperties: false
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+paths:
+  /flow/init:
+    post:
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/Body'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Body'
+      consumes: []
+      produces: []
+      parameters:
+        - name: Body
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/Body'
