@@ -22,20 +22,4 @@ veracode_static_scan:
             -action UploadAndScan -appname "Verademo" -createprofile false
             -filepath app/target/verademo.war -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
     allow_failure: true
-
-# the above steps are the bare minimum.
-# below are some additional steps that are commonplace
-
-veracode_sca_scan:
-    image: maven:3.6.3-openjdk-8
-    stage: sca-scan
-    script:
-        - curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan app
-                    
-veracode_container_scan:
-    image: maven:3.6.3-openjdk-8
-    stage: container-scan
-    script:
-        - curl -fsS https://tools.veracode.com/veracode-cli/install | sh
-        - ./veracode scan --type directory --source . --format table
                     
