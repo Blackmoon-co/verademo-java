@@ -12,7 +12,7 @@ build_app:
             - app/target/verademo.war
 
 veracode_static_scan:
-    image: veracode/api-wrapper-java:1.7.0
+    image: veracode/api-wrapper-java:latest
     stage: static-scan
     script:
         - java -jar /opt/veracode/api-wrapper.jar 
