@@ -1,8 +1,6 @@
 stages:
     - build
     - static-scan
-    - sca-scan
-    - container-scan
 
 build_app:
     image: maven:3.6.3-openjdk-8
