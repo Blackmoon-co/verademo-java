@@ -12,11 +12,15 @@ build_app:
             - app/target/verademo.war
 
 veracode_static_scan:
-    image: veracode/api-wrapper-java:latest
+    image: veracode/api-wrapper-java:1.7.0
     stage: static-scan
     script:
-        - java -jar /opt/veracode/api-wrapper.jar -vid $VERACODE_API_KEY_ID -vkey $VERACODE_API_KEY_SECRET
-            -action UploadAndScan -appname "Verademo" -createprofile false
-            -filepath app/target/verademo.war -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
+        - java -jar /opt/veracode/api-wrapper.jar 
+            -vid "$VERACODE_API_ID" 
+            -vkey "$VERACODE_API_KEY" 
+            -action UploadAndScan 
+            -appname "VeraDemo" 
+            -createprofile false 
+            -filepath app/target/verademo.war 
+            -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
     allow_failure: true
-                    
