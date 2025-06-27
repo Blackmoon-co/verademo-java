@@ -19,8 +19,8 @@ veracode_static_scan:
             -vid "$VERACODE_API_ID" 
             -vkey "$VERACODE_API_KEY" 
             -action UploadAndScan 
-            -appname "VeraDemo" 
-            -createprofile false 
+            -appname "VeraDemoJava" 
+            -createprofile true 
             -filepath app/target/verademo.war 
             -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
     allow_failure: true
