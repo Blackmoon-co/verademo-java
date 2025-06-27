@@ -16,8 +16,8 @@ veracode_static_scan:
     stage: static-scan
     script:
         - java -jar /opt/veracode/api-wrapper.jar 
-            -vid "$VERACODE_API_ID" 
-            -vkey "$VERACODE_API_KEY" 
+            -vid "${VERACODE_API_KEY_ID}" 
+            -vkey "${VERACODE_API_KEY_SECRET}" 
             -action UploadAndScan 
             -appname "VeraDemoJava" 
             -createprofile true 
