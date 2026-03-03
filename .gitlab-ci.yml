@@ -67,7 +67,7 @@ veracode_sandbox_scan:
         -appname "VeraDemoJava3" \
         -createprofile true \
         -sandboxname "DevelopSandbox" \
-        -createnewsandbox true \
+        -createsandbox true \
         -autoscan true \
         -filepath app/target/verademo.war \
         -version "Develop ${CI_COMMIT_SHA:0:8}"
