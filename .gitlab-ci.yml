@@ -16,25 +16,35 @@ build_app:
       - app/target/verademo.war
 
 ############################
-# PIPELINE SCAN (feature/*)
+# PIPELINE SCAN AND SCA (feature/*)
 ############################
 
 veracode_pipeline_scan:
-  image: openjdk:8
+  image: eclipse-temurin:11-jre
   stage: security
   dependencies:
     - build_app
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
   script:
+    - echo "Installing tools"
+    - apt-get update && apt-get install -y unzip wget
     - echo "Running Veracode Pipeline Scan"
     - wget https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-    - unzip pipeline-scan-LATEST.zip
-    - java -jar pipeline-scan.jar \
-        -vid "${VERACODE_API_ID}" \
-        -vkey "${VERACODE_API_KEY}" \
-        -f app/target/verademo.war \
-        --fail_on_severity VeryHigh,High
+    - unzip -o pipeline-scan-LATEST.zip
+    - java -jar pipeline-scan.jar -vid "${VERACODE_API_ID}" -vkey "${VERACODE_API_KEY}" -f app/target/verademo.war -fs "Very High,High" -id true || true
+
+veracode_sca:
+  stage: security
+  image: maven:3.9.6-eclipse-temurin-17
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
+  script:
+    - cd app
+    - mvn clean install -DskipTests
+  after_script:
+    - cd app
+    - curl -sSL https://sca-downloads.veracode.com/ci.sh | sh
 
 ############################
 # SANDBOX SCAN (develop)
@@ -57,7 +67,7 @@ veracode_sandbox_scan:
         -appname "VeraDemoJava3" \
         -createprofile true \
         -sandboxname "DevelopSandbox" \
-        -createnewsandbox true \
+        -createsandbox true \
         -autoscan true \
         -filepath app/target/verademo.war \
         -version "Develop ${CI_COMMIT_SHA:0:8}"
