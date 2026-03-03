@@ -1,6 +1,6 @@
 stages:
     - build
-    - static-scan
+    - policy-scan
 
 build_app:
     image: maven:3.6.3-openjdk-8
@@ -11,16 +11,17 @@ build_app:
         paths:
             - app/target/verademo.war
 
-veracode_static_scan:
+veracode_policy_scan:
   image: veracode/api-wrapper-java:latest
-  stage: static-scan
+  stage: policy-scan
+  dependencies:
+    - build_app
   rules:
-      # Cuando es un Merge Request hacia main
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
-    # Cuando es push directo a main
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
-    - java -jar /opt/veracode/api-wrapper.jar \
+    - |
+      java -jar /opt/veracode/api-wrapper.jar \
         -vid "${VERACODE_API_ID}" \
         -vkey "${VERACODE_API_KEY}" \
         -action UploadAndScan \
