@@ -12,15 +12,20 @@ build_app:
             - app/target/verademo.war
 
 veracode_static_scan:
-    image: veracode/api-wrapper-java:latest
-    stage: static-scan
-    script:
-        - java -jar /opt/veracode/api-wrapper.jar 
-            -vid "${VERACODE_API_KEY_ID}" 
-            -vkey "${VERACODE_API_KEY_SECRET}" 
-            -action UploadAndScan 
-            -appname "VeraDemoJava3" 
-            -createprofile true 
-            -filepath app/target/verademo.war 
-            -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
-    allow_failure: true
+  image: veracode/api-wrapper-java:latest
+  stage: static-scan
+  rules:
+      # Cuando es un Merge Request hacia main
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
+    # Cuando es push directo a main
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - java -jar /opt/veracode/api-wrapper.jar \
+        -vid "${VERACODE_API_ID}" \
+        -vkey "${VERACODE_API_KEY}" \
+        -action UploadAndScan \
+        -appname "VeraDemoJava3" \
+        -createprofile true \
+        -filepath app/target/verademo.war \
+        -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
+  allow_failure: true
