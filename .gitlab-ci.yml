@@ -2,6 +2,16 @@ stages:
   - build
   - security
 
+include:
+  - project: 'devsecops/gitlab-templates'
+    ref: 'v1.0.0'
+    file: '/veracode/pipeline.yml'
+
+variables:
+  VERACODE_APP_NAME: "mi-app"
+  PACKAGE_PATH: "app/target/*.war"
+  PROJECT_PATH: "app"
+
 ############################
 # BUILD
 ############################
@@ -15,85 +25,3 @@ build_app:
     paths:
       - app/target/verademo.war
 
-############################
-# PIPELINE SCAN AND SCA (feature/*)
-############################
-
-veracode_pipeline_scan:
-  image: eclipse-temurin:11-jre
-  stage: security
-  dependencies:
-    - build_app
-  rules:
-    - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
-  script:
-    - echo "Installing tools"
-    - apt-get update && apt-get install -y unzip wget
-    - echo "Running Veracode Pipeline Scan"
-    - wget https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-    - unzip -o pipeline-scan-LATEST.zip
-    - java -jar pipeline-scan.jar -vid "${VERACODE_API_ID}" -vkey "${VERACODE_API_KEY}" -f app/target/verademo.war -fs "Very High,High" -id true || true
-
-veracode_sca:
-  stage: security
-  image: maven:3.9.6-eclipse-temurin-17
-  rules:
-    - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
-  script:
-    - cd app
-    - mvn clean install -DskipTests
-  after_script:
-    - cd app
-    - curl -sSL https://sca-downloads.veracode.com/ci.sh | sh
-
-############################
-# SANDBOX SCAN (develop)
-############################
-
-veracode_sandbox_scan:
-  image: veracode/api-wrapper-java:latest
-  stage: security
-  dependencies:
-    - build_app
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
-  script:
-    - |
-      echo "Running Sandbox Scan (DevelopSandbox)"
-      java -jar /opt/veracode/api-wrapper.jar \
-        -vid "${VERACODE_API_ID}" \
-        -vkey "${VERACODE_API_KEY}" \
-        -action UploadAndScan \
-        -appname "VeraDemoJava3" \
-        -createprofile true \
-        -sandboxname "DevelopSandbox" \
-        -createsandbox true \
-        -autoscan true \
-        -filepath app/target/verademo.war \
-        -version "Develop ${CI_COMMIT_SHA:0:8}"
-
-############################
-# POLICY SCAN (main + MR → main)
-############################
-
-veracode_policy_scan:
-  image: veracode/api-wrapper-java:latest
-  stage: security
-  dependencies:
-    - build_app
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-  script:
-    - |
-      echo "Running Official Policy Scan"
-      java -jar /opt/veracode/api-wrapper.jar \
-        -vid "${VERACODE_API_ID}" \
-        -vkey "${VERACODE_API_KEY}" \
-        -action UploadAndScan \
-        -appname "VeraDemoJava3" \
-        -createprofile true \
-        -autoscan true \
-        -filepath app/target/verademo.war \
-        -version "Main ${CI_COMMIT_SHA:0:8}"
-  allow_failure: false
