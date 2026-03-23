@@ -12,7 +12,7 @@ variables:
   PACKAGE_PATH: "app/target/*.war"
   PROJECT_PATH: "app"
   SANDBOX_NAME: "verademo-java-gitlab-sandbox"
-  POVERACODE_POLICY_NAME: "Veracode Recommended Very High + SCA"
+  VERACODE_POLICY_NAME: "Veracode Recommended Very High + SCA"
   VERACODE_TEAMS: "Consultor"
   USE_AUTOPACKAGE: "true"
 
