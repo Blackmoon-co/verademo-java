@@ -16,7 +16,7 @@ variables:
 # BUILD
 ############################
 
-build_app:
+build:
   image: maven:3.6.3-openjdk-8
   stage: build
   script:
