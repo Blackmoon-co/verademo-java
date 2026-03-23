@@ -19,6 +19,7 @@ variables:
 ############################
 # BUILD
 ############################
+
 # build:
 #  image: maven:3.6.3-openjdk-8
 #  stage: build
