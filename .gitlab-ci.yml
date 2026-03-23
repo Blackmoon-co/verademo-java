@@ -3,7 +3,7 @@ stages:
   - security
 
 include:
-  - project: 'devsecops/gitlab-templates'
+  - project: 'devsecops7293510/gitlab-templates'
     ref: 'v1.0.0'
     file: '/veracode/pipeline.yml'
 
