@@ -9,8 +9,8 @@ include:
 
 variables:
   VERACODE_APP_NAME: "verademo-java-gitlab"
-  PACKAGE_PATH: "app/target/*.war"
-  PROJECT_PATH: "app"
+#  PACKAGE_PATH: "app/target/*.war"
+#  PROJECT_PATH: "app"
   SANDBOX_NAME: "verademo-java-gitlab-sandbox"
   VERACODE_POLICY_NAME: "Veracode Recommended Very High + SCA"
   VERACODE_TEAMS: "Consultor"
