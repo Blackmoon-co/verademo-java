@@ -4,7 +4,7 @@ stages:
 
 include:
   - project: 'devsecops7293510/gitlab-templates'
-    ref: 'v1.0.0'
+    ref: 'main'
     file: '/veracode/pipeline.yml'
 
 variables:
