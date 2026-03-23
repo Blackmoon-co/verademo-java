@@ -29,4 +29,5 @@ build:
   artifacts:
     paths:
       - app/target/verademo.war
+  expire_in: 7 days 
 
