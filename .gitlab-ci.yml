@@ -8,9 +8,10 @@ include:
     file: '/veracode/pipeline.yml'
 
 variables:
-  VERACODE_APP_NAME: "mi-app"
+  VERACODE_APP_NAME: "verademo-java-gitlab"
   PACKAGE_PATH: "app/target/*.war"
   PROJECT_PATH: "app"
+  SANDBOX_NAME: "verademo-java-gitlab-sandbox"
 
 ############################
 # BUILD
