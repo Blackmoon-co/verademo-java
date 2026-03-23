@@ -14,7 +14,8 @@ variables:
   SANDBOX_NAME: "verademo-java-gitlab-sandbox"
   VERACODE_POLICY_NAME: "Veracode Recommended Very High + SCA"
   VERACODE_TEAMS: "Consultor"
-#  USE_AUTOPACKAGE: "true"
+  USE_AUTOPACKAGE: "false"
+
 
 ############################
 # BUILD
