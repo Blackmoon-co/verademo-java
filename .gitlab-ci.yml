@@ -16,7 +16,6 @@ variables:
   VERACODE_TEAMS: "Consultor"
   USE_AUTOPACKAGE: "false"
 
-
 ############################
 # BUILD
 ############################
