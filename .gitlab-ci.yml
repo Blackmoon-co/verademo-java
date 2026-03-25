@@ -31,7 +31,7 @@ variables:
 #    - if: '$CI_PIPELINE_SOURCE == "push"'
 #    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")'
 
-veracode_autopackage:
+package:
   image: alpine:latest
   stage: package
 
