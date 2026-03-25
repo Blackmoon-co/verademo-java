@@ -1,5 +1,5 @@
 stages:
-  - build
+  - package
   - security
 
 include:
@@ -14,7 +14,6 @@ variables:
   SANDBOX_NAME: "verademo-java-gitlab-sandbox"
   VERACODE_POLICY_NAME: "Politica Restritiva"
   VERACODE_TEAMS: "Consultor"
-  USE_AUTOPACKAGE: "true"
 
 ############################
 # BUILD
@@ -31,3 +30,113 @@ variables:
 #  rules:
 #    - if: '$CI_PIPELINE_SOURCE == "push"'
 #    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")'
+
+veracode_autopackage:
+  image: alpine:latest
+  stage: package
+
+  variables:
+    OUTPUT_DIR: "veracode_artifact"
+
+  rules:
+    - if: '$USE_AUTOPACKAGE == "true"'
+
+  script:
+    - set -e
+    - echo "📦 Instalando dependencias"
+    - apk add --no-cache curl unzip bash openjdk17 maven
+
+    # CLI
+    - curl -sSL https://tools.veracode.com/veracode-cli/install | sh
+    - export PATH=$PATH:/root/.veracode
+
+    # Credenciales
+    - export VERACODE_API_KEY_ID="$VERACODE_API_ID"
+    - export VERACODE_API_KEY_SECRET="$VERACODE_API_KEY"
+
+    - |
+      [ -z "$VERACODE_API_KEY_ID" ] && echo "❌ Falta API ID" && exit 1
+      [ -z "$VERACODE_API_KEY_SECRET" ] && echo "❌ Falta API KEY" && exit 1
+
+    # Java
+    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+    - export PATH=$JAVA_HOME/bin:$PATH
+
+    - java -version
+    - mvn -version
+
+    ###################################
+    # 🔥 CLAVE: BUILD DEL PROYECTO
+    ###################################
+    - echo "🔨 Construyendo proyecto desde $PROJECT_PATH"
+    - cd "$PROJECT_PATH"
+
+    - |
+      if [ -f "pom.xml" ]; then
+        echo "☕ Maven detectado"
+        mvn clean package -DskipTests
+      else
+        echo "⚠️ No se encontró pom.xml"
+      fi
+
+    - cd ..
+
+    ###################################
+    # 🚀 AUTOPACKAGE
+    ###################################
+    - echo "🚀 Ejecutando veracode package"
+    - |
+      ./veracode package \
+        --source "$PROJECT_PATH" \
+        --output "$OUTPUT_DIR" \
+        --trust \
+        --verbose
+
+    ###################################
+    # 🎯 SELECCIÓN DE ARTEFACTO
+    ###################################
+    - |
+      echo "Seleccionando mejor artefacto..."
+
+      FILE=$(find $OUTPUT_DIR -type f -name "*.war" ! -name "*sources*" ! -name "*test*" | sort | head -n 1)
+
+      if [ -z "$FILE" ]; then
+        FILE=$(find $OUTPUT_DIR -type f -name "*.jar" ! -name "*sources*" ! -name "*test*" | sort | head -n 1)
+      fi
+
+      if [ -z "$FILE" ]; then
+        FILE=$(find $OUTPUT_DIR -type f -name "*.zip" ! -name "*sources*" ! -name "*test*" | sort | head -n 1)
+      fi
+
+      if [ -z "$FILE" ]; then
+        echo "❌ No se encontró artefacto válido"
+        find $OUTPUT_DIR -type f
+        exit 1
+      fi
+
+      echo "✅ Artefacto seleccionado: $FILE"
+
+    ###################################
+    # 🧹 LIMPIEZA
+    ###################################
+    - |
+      echo "🧹 Limpiando artefactos..."
+      FINAL_NAME=$(basename "$FILE")
+      mkdir -p final_artifact_tmp
+      cp "$FILE" "final_artifact_tmp/$FINAL_NAME"
+      rm -rf "$OUTPUT_DIR"
+      mv final_artifact_tmp "$OUTPUT_DIR"
+      ls -l "$OUTPUT_DIR"
+
+    ###################################
+    # 📄 OUTPUT
+    ###################################
+    - |
+      echo "$OUTPUT_DIR/$FINAL_NAME" > artifact_path.txt
+      echo "📄 Path guardado en artifact_path.txt"
+
+  artifacts:
+    paths:
+      - $OUTPUT_DIR/
+      - artifact_path.txt
+    expire_in: 7 days
