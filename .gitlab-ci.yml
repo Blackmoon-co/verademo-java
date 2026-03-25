@@ -39,7 +39,8 @@ veracode_autopackage:
     OUTPUT_DIR: "veracode_artifact"
 
   rules:
-    - if: '$USE_AUTOPACKAGE == "true"'
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")'
 
   script:
     - set -e
