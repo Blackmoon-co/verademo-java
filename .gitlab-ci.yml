@@ -3,32 +3,31 @@ stages:
   - security
 
 include:
-  - project: 'devsecops7293510/gitlab-templates'
-    ref: 'main'
-    file: '/veracode/pipeline.yml'
+  - project: "devsecops7293510/gitlab-templates"
+    ref: "main"
+    file: "/veracode/pipeline.yml"
 
 variables:
   VERACODE_APP_NAME: "verademo-java-gitlab"
-  PACKAGE_PATH: "app/target/*.war"
+ # PACKAGE_PATH: "app/target/*.war"
   PROJECT_PATH: "app"
   SANDBOX_NAME: "verademo-java-gitlab-sandbox"
-  VERACODE_POLICY_NAME: "Veracode Recommended Very High + SCA"
+  VERACODE_POLICY_NAME: "Politica Restritiva"
   VERACODE_TEAMS: "Consultor"
-  USE_AUTOPACKAGE: "false"
+  USE_AUTOPACKAGE: "true"
 
 ############################
 # BUILD
 ############################
 
-build:
-  image: maven:3.6.3-openjdk-8
-  stage: build
-  script:
-    - mvn -f app clean package
-  artifacts:
-    paths:
-      - app/target/verademo.war
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")'
-
+#build:
+#  image: maven:3.6.3-openjdk-8
+#  stage: build
+#  script:
+#    - mvn -f app clean package
+#  artifacts:
+#    paths:
+#      - app/target/verademo.war
+#  rules:
+#    - if: '$CI_PIPELINE_SOURCE == "push"'
+#    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")'
