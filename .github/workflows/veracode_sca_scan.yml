@@ -9,14 +9,10 @@ permissions:
 on:
   workflow_call:
     inputs:
-      quick:
+      path:
         required: false
-        type: boolean
-        default: true
-      create_issues:
-        required: false
-        type: boolean
-        default: true
+        type: string
+        default: '.'
 
 jobs:
   veracode-sca-task:
@@ -33,5 +29,7 @@ jobs:
         uses: veracode/veracode-sca@v2.1.15
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          quick: ${{ inputs.quick }}
-          create-issues: ${{ inputs.create_issues }}
+          path: ${{ inputs.path }}
+          
+      - name: Display scan URL
+        run: 'echo "View detailed report at: ${{ steps.veracode-sca.outputs.scan-url }}"'
