@@ -60,11 +60,11 @@ jobs:
 
         - name: Build Docker image
           run: |
-            docker build -t ghcr.io/${{ github.repository }}/verademo-net:${{ github.sha }} .
+            docker build -t ghcr.io/${{ github.repository }}/${{ github.sha }} .
 
         - name: Push Docker image
           run: |
-            docker push ghcr.io/${{ github.repository }}/verademo-net:${{ github.sha }}
+            docker push ghcr.io/${{ github.repository }}/${{ github.sha }}
 
         - name: List images
           run: docker images
