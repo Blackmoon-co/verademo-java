@@ -35,3 +35,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: ${{ inputs.quick }}
           create-issues: ${{ inputs.create_issues }}
+
+      - name: Display scan URL
+        run: echo "View detailed report at: ${{ steps.veracode-sca.outputs.scan-url }}"
