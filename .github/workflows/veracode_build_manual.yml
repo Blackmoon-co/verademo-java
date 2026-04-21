@@ -46,7 +46,7 @@ jobs:
       needs: Build
       runs-on: ubuntu-latest
       if: |
-         github.event.pull_request.base.ref == 'develop'
+         github.ref_name == 'develop'
       permissions:
         contents: read
         packages: write
@@ -100,7 +100,7 @@ jobs:
     veracode-iac-scan_image:
       needs: build-docker-image
       if: |
-         github.event.pull_request.base.ref == 'develop'
+         github.ref_name == 'develop'
       uses: ./.github/workflows/veracode_iac_container_scan.yml
       secrets: inherit
       with:
@@ -111,7 +111,7 @@ jobs:
     veracode-sandbox:
       needs: Build
       if: |
-        github.event.pull_request.base.ref == 'develop'
+        github.ref_name == 'develop'
       uses: ./.github/workflows/veracode_sandbox_scan.yml
       secrets: inherit
       permissions:
@@ -128,7 +128,7 @@ jobs:
     veracode-policy-scan:
       needs: Build
       if: |
-        github.event.pull_request.base.ref == 'main'
+        github.ref_name == 'main'
       uses: ./.github/workflows/veracode_policy_scan.yml
       secrets: inherit
       permissions:
