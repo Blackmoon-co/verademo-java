@@ -120,7 +120,7 @@ jobs:
         issues: write
         security-events: write
       with:
-        veracode_app_profile_name: 'verademo-net'
+        veracode_app_profile_name: ${{ github.event.repository.name }}
         veracode_sandbox_name: 'feature-develop-sandbox'
         create_profile: true
         create_sandbox: true
@@ -137,4 +137,4 @@ jobs:
         issues: write
         security-events: write
       with:
-        veracode_app_profile_name: 'verademo-net'
+        veracode_app_profile_name: ${{ github.event.repository.name }}
