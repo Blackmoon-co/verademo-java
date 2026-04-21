@@ -99,7 +99,6 @@ jobs:
         security-events: write
       with:
         quick: true
-        create_issues: false
 
     veracode-iac-scan:
       needs: Build
