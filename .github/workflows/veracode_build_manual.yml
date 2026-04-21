@@ -60,11 +60,11 @@ jobs:
 
         - name: Build Docker image
           run: |
-            docker build -t ghcr.io/${{ github.repository }}/verademo-net:${{ github.sha }} .
+            docker build -t ghcr.io/${{ github.repository }}/${{ github.sha }} .
 
         - name: Push Docker image
           run: |
-            docker push ghcr.io/${{ github.repository }}/verademo-net:${{ github.sha }}
+            docker push ghcr.io/${{ github.repository }}/${{ github.sha }}
 
         - name: List images
           run: docker images
@@ -86,6 +86,19 @@ jobs:
         output_file: veracode-results.json
         fail_build: false
         verbose: true
+
+    veracode-sca-scan:
+      needs: Build
+      if: startsWith(github.ref_name, 'feature/')
+      uses: ./.github/workflows/veracode_sca_scan.yml
+      secrets: inherit
+      permissions:
+        contents: read
+        issues: write
+        pull-requests: write
+        security-events: write
+      with:
+        path: './app'
 
     veracode-iac-scan:
       needs: Build
