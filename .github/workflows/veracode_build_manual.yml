@@ -87,6 +87,20 @@ jobs:
         fail_build: false
         verbose: true
 
+    veracode-sca-scan:
+      needs: Build
+      if: startsWith(github.ref_name, 'feature/')
+      uses: ./.github/workflows/veracode_sca_scan.yml
+      secrets: inherit
+      permissions:
+        contents: read
+        issues: write
+        pull-requests: write
+        security-events: write
+      with:
+        quick: true
+        create_issues: false
+
     veracode-iac-scan:
       needs: Build
       if: startsWith(github.ref_name, 'feature/')
