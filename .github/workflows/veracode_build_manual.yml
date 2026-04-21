@@ -60,11 +60,21 @@ jobs:
 
         - name: Build Docker image
           run: |
-            docker build -t ghcr.io/${{ github.repository }}/${{ github.sha }} .
+            # Convertir a minúsculas (GHCR requiere minúsculas)
+            REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+            IMAGE_NAME="ghcr.io/${REPO_LOWER}/verademo"
+            IMAGE_TAG="${{ github.sha }}"
+            
+            echo "Building image: ${IMAGE_NAME}:${IMAGE_TAG}"
+            docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest .
+            
+            echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
 
         - name: Push Docker image
           run: |
-            docker push ghcr.io/${{ github.repository }}/${{ github.sha }}
+            docker push ${IMAGE_NAME}:${IMAGE_TAG}
+            docker push ${IMAGE_NAME}:latest
 
         - name: List images
           run: docker images
