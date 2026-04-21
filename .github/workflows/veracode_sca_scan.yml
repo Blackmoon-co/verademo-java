@@ -34,6 +34,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: ${{ inputs.quick }}
+          path: app
           create-issues: ${{ inputs.create_issues }}
           
       - name: Display scan URL
