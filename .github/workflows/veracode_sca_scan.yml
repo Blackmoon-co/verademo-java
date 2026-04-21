@@ -40,7 +40,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: ${{ inputs.quick }}
           path: app
-          create-issues: ${{ inputs.create-issues }}
       
       - name: Display scan URL
         run: 'echo "View detailed report at: ${{ steps.veracode-sca.outputs.scan-url }}"'
