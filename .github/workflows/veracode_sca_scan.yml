@@ -1,11 +1,5 @@
 name: Veracode SCA Scan
 
-permissions:
-    contents: read
-    issues: write
-    pull-requests: write
-    security-events: write
-
 on:
   workflow_call:
     inputs:
@@ -13,7 +7,7 @@ on:
         required: false
         type: boolean
         default: false
-      create_issues:
+      create-issues:
         required: false
         type: boolean
         default: true
@@ -27,15 +21,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          
+      - name: Resolve Maven dependencies
+        working-directory: ./app
+        run: mvn dependency:resolve
+        
       - name: Run Veracode SCA
+        id: veracode-sca
         env:
           SRCCLR_API_TOKEN: ${{ secrets.VERACODE_AGENT_TOKEN }}
         uses: veracode/veracode-sca@v2.1.15
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: ${{ inputs.quick }}
-          path: ./app
-          create-issues: ${{ inputs.create_issues }}
-          
+          path: app
+          create-issues: ${{ inputs.create-issues }}
+      
       - name: Display scan URL
         run: 'echo "View detailed report at: ${{ steps.veracode-sca.outputs.scan-url }}"'
