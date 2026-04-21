@@ -84,7 +84,7 @@ jobs:
         veracode_policy_name: 'Politica Restritiva'
         json_output: true
         output_file: veracode-results.json
-        fail_build: false
+        fail_build: true
         verbose: true
 
     veracode-sca-scan:
