@@ -1,0 +1,64 @@
+on:
+  workflow_call:
+    inputs:
+      scan_type:
+        required: true
+        type: string
+      scan_source:
+        required: true
+        type: string
+      format_result:
+        required: false
+        type: string
+        default: json
+      fail_build:
+        required: false
+        type: boolean
+        default: true
+      tag:
+        required: false
+        type: string
+
+jobs:
+  container-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar Veracode CLI y ejecutar scan
+        run: |
+          set -e
+
+          echo "Instalando Veracode CLI..."
+          curl -fsS https://tools.veracode.com/veracode-cli/install | sh
+
+          echo "Ejecutando scan..."
+
+          if [ "${{ inputs.scan_type }}" = "image" ]; then
+            echo "Escaneando imagen Docker: ${{ inputs.scan_source }}:${{ inputs.tag }}"
+            ./veracode scan \
+              --type image \
+              --source ${{ inputs.scan_source }}:${{ inputs.tag }} \
+              --format ${{ inputs.format_result }} \
+              --output cs_results_image.json
+          else
+            echo "Escaneando directorio: ${{ inputs.scan_source }}"
+            ./veracode scan \
+              --type directory \
+              --source ${{ inputs.scan_source }} \
+              --format ${{ inputs.format_result }} \
+              --output cs_results_dir.json
+          fi
+        env:
+          VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
+          VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
+
+      - name: Subir resultados como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: veracode-container-scan-results
+          path: |
+            cs_results_image.json
+            cs_results_dir.json
