@@ -81,7 +81,7 @@ jobs:
         issues: write
         security-events: write
       with:
-        veracode_policy_name: 'Veracode Recommended Very High + SCA'
+        veracode_policy_name: 'Politica Restritiva'
         json_output: true
         output_file: veracode-results.json
         fail_build: false
