@@ -9,10 +9,6 @@ permissions:
 on:
   workflow_call:
     inputs:
-      quick:
-        required: false
-        type: boolean
-        default: false
       path:
         required: false
         type: string
@@ -33,7 +29,6 @@ jobs:
         uses: veracode/veracode-sca@v2.1.15
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          quick: ${{ inputs.quick }}
           path: ${{ inputs.path }}
           
       - name: Display scan URL

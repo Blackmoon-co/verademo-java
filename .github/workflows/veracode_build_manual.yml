@@ -98,7 +98,6 @@ jobs:
         pull-requests: write
         security-events: write
       with:
-        quick: true
         path: './app'
 
     veracode-iac-scan:
