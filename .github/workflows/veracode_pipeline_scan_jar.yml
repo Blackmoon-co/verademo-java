@@ -1,0 +1,86 @@
+name: Veracode pipeline scan with jar veracode
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  issues: write
+
+on:
+  workflow_call:
+    inputs:
+      veracode_policy_name:
+        required: true
+        type: string
+      json_output:
+        required: false
+        type: boolean
+        default: true
+      output_file:
+        required: false
+        type: string
+        default: veracode-results.json
+      fail_build:
+        required: false
+        type: boolean
+        default: false
+      verbose:
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  pipeline-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Downloading artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: veracode-artifact
+
+      - name: Detect artifact for Veracode
+        id: detect
+        run: |
+          artifact=$(find . -type f \( -name "*.zip" -o -name "*.war" -o -name "*.jar" -o -name "*.ear" \) | head -n 1)
+
+          if [ -z "$artifact" ]; then
+            echo "::error::No valid artifact found"
+            exit 1
+          fi
+
+          echo "Artifact detected: $artifact"
+          echo "artifact_path=$artifact" >> $GITHUB_OUTPUT
+
+      - name: Pipeline-Scan veracode
+        uses: veracode/Veracode-pipeline-scan-action@v1.0.18
+        with:
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
+          file: ${{ steps.detect.outputs.artifact_path }}
+          json_output: true
+          verbose: ${{ inputs.verbose }}
+          json_output_file: ${{ inputs.output_file }}
+          veracode_policy_name: ${{ inputs.veracode_policy_name }}
+          fail_build: ${{ inputs.fail_build }}
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Download the Pipeline Scanner
+        run: curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+
+      - name: Unzip the Pipeline Scanner
+        run: unzip pipeline-scan-LATEST.zip
+
+      - name: Run Pipeline Scanner
+        run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{ secrets.VERACODE_API_ID }}" --veracode_api_key "${{ secrets.VERACODE_API_KEY }}" --file "${{ steps.detect.outputs.artifact_path }}" --fail_on_severity="Very High, High"
+
+      - name: Upload Veracode results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: veracode-pipeline-scan-results
+          path: ${{ inputs.output_file }}
+          if-no-files-found: warn
