@@ -54,8 +54,8 @@ jobs:
       - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
-          distribution: 'temurin'
+          java-version: "11"
+          distribution: "temurin"
 
       - name: Download the Pipeline Scanner
         run: curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
@@ -63,24 +63,37 @@ jobs:
       - name: Unzip the Pipeline Scanner
         run: unzip -o pipeline-scan-LATEST.zip
 
-      - name: Download policy file
+      - name: Download policy file from Veracode
         id: download_policy
         run: |
-         echo "Downloading policy: ${{ inputs.veracode_policy_name }}"
- 
-         java -Dpipeline.debug=${{ inputs.verbose }} -jar pipeline-scan.jar \
+          # Sanitizar el nombre para evitar espacios
+          POLICY_NAME="${{ inputs.veracode_policy_name }}"
+          SAFE_NAME=$(echo "$POLICY_NAME" | sed 's/ /_/g')
+          POLICY_FILE="./${SAFE_NAME}.json"
+
+          echo "Downloading policy: $POLICY_NAME"
+          echo "Will save to: $POLICY_FILE"
+
+          java -Dpipeline.debug=${{ inputs.verbose }} -jar pipeline-scan.jar \
             --veracode_api_id "${{ secrets.VERACODE_API_ID }}" \
             --veracode_api_key "${{ secrets.VERACODE_API_KEY }}" \
-            -rp "${{inputs.veracode_policy_name}}" \
-            -pn "./${{inputs.veracode_policy_name}}.json"
+            -rp "$POLICY_NAME" \
+            -pn "$POLICY_FILE"
 
-            if [ -f "./${{ inputs.veracode_policy_name }}.json" ]; then
-                echo "Policy file downloaded successfully"
-                echo "policy_file=./${{ inputs.veracode_policy_name }}.json" >> $GITHUB_OUTPUT
-            else
-                echo "::error::Failed to download policy file"
-                exit 1
-            fi
+          # Verificar si el archivo se creó y no está vacío
+          if [ -f "$POLICY_FILE" ] && [ -s "$POLICY_FILE" ]; then
+            echo "Policy file downloaded successfully"
+            echo "policy_file=$POLICY_FILE" >> $GITHUB_OUTPUT
+
+            # Mostrar primeras líneas para debug
+            echo "Policy file content preview:"
+            head -c 500 "$POLICY_FILE"
+          else
+            echo "::error::Failed to download policy file or file is empty"
+            echo "Listing current directory:"
+            ls -la
+            exit 1
+          fi
 
       - name: Run Pipeline Scanner
         id: scan
