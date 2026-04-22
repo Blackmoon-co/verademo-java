@@ -46,7 +46,7 @@ jobs:
     veracode-pipeline-scan:
       needs: Build
       if: startsWith(github.ref_name, 'feature/')
-      uses: ./.github/workflows/veracode_pipeline_scan.yml
+      uses: ./.github/workflows/veracode_pipeline_scan_jar.yml
       secrets: inherit
       permissions:
         contents: read
