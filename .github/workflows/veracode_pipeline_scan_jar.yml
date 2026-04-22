@@ -65,7 +65,6 @@ jobs:
 
       - name: Run Pipeline Scanner
         id: scan
-        continue-on-error: true  # 👈 Permite que el paso no detenga el flujo inmediatamente
         run: |
           java -Dpipeline.debug=${{ inputs.verbose }} -jar pipeline-scan.jar \
             --veracode_api_id "${{ secrets.VERACODE_API_ID }}" \
@@ -74,21 +73,11 @@ jobs:
             --json_output ${{ inputs.json_output }} \
             --json_output_file "${{ inputs.output_file }}" \
             --fail_on_severity="Very High,High"
-          
-          # Guardamos el código de salida
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
 
       - name: Upload Veracode results
-        if: always() 
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: veracode-pipeline-scan-results
           path: ${{ inputs.output_file }}
           if-no-files-found: warn
-
-      - name: Fail build if vulnerabilities found
-        if: steps.scan.outputs.exit_code != 0 && inputs.fail_build == true
-        run: |
-          echo "::error::Veracode Pipeline Scan failed - Found Very High or High severity vulnerabilities"
-          echo "Results uploaded to artifact: veracode-pipeline-scan-results"
-          exit 1
