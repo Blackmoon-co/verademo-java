@@ -63,16 +63,38 @@ jobs:
       - name: Unzip the Pipeline Scanner
         run: unzip -o pipeline-scan-LATEST.zip
 
+      - name: Download policy file
+        id: download_policy
+        run: |
+         echo "Downloading policy: ${{ inputs.veracode_policy_name }}"
+ 
+         java -Dpipeline.debug=${{ inputs.verbose }} -jar pipeline-scan.jar \
+            --veracode_api_id "${{ secrets.VERACODE_API_ID }}" \
+            --veracode_api_key "${{ secrets.VERACODE_API_KEY }}" \
+            -rp "${{inputs.veracode_policy_name}}" \
+            -pn "./${{inputs.veracode_policy_name}}.json"
+
+            if [ -f "./${{ inputs.veracode_policy_name }}.json" ]; then
+                echo "Policy file downloaded successfully"
+                echo "policy_file=./${{ inputs.veracode_policy_name }}.json" >> $GITHUB_OUTPUT
+            else
+                echo "::error::Failed to download policy file"
+                exit 1
+            fi
+
       - name: Run Pipeline Scanner
         id: scan
         run: |
+          echo "Scanning file: ${{ steps.detect.outputs.artifact_path }}"
+          echo "Using policy: ${{ steps.download_policy.outputs.policy_file }}"
+
           java -Dpipeline.debug=${{ inputs.verbose }} -jar pipeline-scan.jar \
             --veracode_api_id "${{ secrets.VERACODE_API_ID }}" \
             --veracode_api_key "${{ secrets.VERACODE_API_KEY }}" \
             --file "${{ steps.detect.outputs.artifact_path }}" \
             --json_output ${{ inputs.json_output }} \
             --json_output_file "${{ inputs.output_file }}" \
-            --fail_on_severity="Very High,High"
+            -pf "${{ steps.download_policy.outputs.policy_file }}"
 
       - name: Upload Veracode results
         if: always()
