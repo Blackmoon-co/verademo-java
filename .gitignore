@@ -2,4 +2,12 @@ app/target/
 .vscode/*
 
 # ignore things like results.json from a pipeline scan
-app/*.json      
+app/*.json
+
+# macOS
+.DS_Store
+app/.DS_Store
+docs/.DS_Store
+
+# repositorio embebido
+verademo-java/
