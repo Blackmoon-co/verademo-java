@@ -6,7 +6,6 @@ This project is intentionally vulnerable! It contains known vulnerabilities and 
 
 ## About prueba 2
 
-
 Blab-a-Gag is a fairly simple forum type application which allows:
 
 - Users can post a one-liner joke.
@@ -74,4 +73,4 @@ Then register as a new user and add some feeds
 
 ## Agregar texto aca para probar los PUSH y PR
 
--
+--
