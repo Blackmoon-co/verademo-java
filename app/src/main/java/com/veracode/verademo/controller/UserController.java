@@ -146,26 +146,17 @@ public class UserController {
 
 		Connection connect = null;
 		/* START BAD CODE */
-		Statement sqlStatement = null;
-		/* END BAD CODE */
-		/* START GOOD CODE
-		PreparedStatement sqlStatement = null;
-        /* END GOOD CODE */
-		try {
-			// Get the Database Connection
-			logger.info("Creating the Database connection");
-			Class.forName("com.mysql.jdbc.Driver");
-			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
-
-
-			/* START BAD CODE */
-			// Execute the query
-			logger.info("Creating the Statement");
-			String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username='"
-					+ username + "';";
-			sqlStatement = connect.createStatement();
-			logger.info("Execute the Statement");
-			ResultSet result = sqlStatement.executeQuery(sqlQuery);
+PreparedStatement sqlStatement2 = null;
+try {
+    logger.info("Creating the Database connection");
+    Class.forName("com.mysql.jdbc.Driver");
+    connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
+    logger.info("Creating the Statement");
+    String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username=?;";
+    sqlStatement2 = connect.prepareStatement(sqlQuery);
+    logger.info("Execute the Statement");
+    sqlStatement2.setString(1, username);
+    ResultSet result = sqlStatement2.executeQuery();
 			/* END BAD CODE */
 			/* START GOOD CODE
 			String sqlQuery = "select * from users where username=? and password=?;";
