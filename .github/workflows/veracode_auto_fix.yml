@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir -p ~/.veracode
           printf 'credentials:\n  default:\n    api_key_id: "%s"\n    api_key_secret: "%s"\n' \
-            "${API_ID}" "${API_KEY}" > ~/.veracode/credentials
+            "${API_ID}" "${API_KEY}" > ~/.veracode/veracode.yml
           echo "Credentials file written."
 
       # ── 6. Static scan (SAST) ──────────────────────────────────────────────
