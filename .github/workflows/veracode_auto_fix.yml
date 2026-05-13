@@ -40,13 +40,14 @@ jobs:
       - name: Install Veracode CLI
         run: |
           curl -fsS https://tools.veracode.com/veracode-cli/install | sh
-          echo "$HOME/.veracode/bin" >> "$GITHUB_PATH"
+          sudo mv veracode /usr/local/bin/veracode 2>/dev/null || true
+          veracode --version
 
       # ── 5. Configurar credenciales Veracode ───────────────────────────────
       - name: Configure Veracode credentials
         env:
-          API_ID: ${{ secrets.VERACODE_API_ID }}
-          API_KEY: ${{ secrets.VERACODE_API_KEY }}
+          API_ID: ${{ secrets.VC_AUTOFIX_API_ID }}
+          API_KEY: ${{ secrets.VC_AUTOFIX_API_KEY }}
         run: |
           mkdir -p ~/.veracode
           printf 'credentials:\n  default:\n    api_key_id: "%s"\n    api_key_secret: "%s"\n' \
