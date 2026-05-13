@@ -46,12 +46,13 @@ jobs:
       - name: Configure Veracode credentials
         run: |
           mkdir -p ~/.veracode
-          cat > ~/.veracode/credentials << EOF
-          credentials:
-            default:
-              api_key_id: "${{ secrets.VERACODE_API_ID }}"
-              api_key_secret: "${{ secrets.VERACODE_API_KEY }}"
-          EOF
+          cat > ~/.veracode/credentials << 'CREDS'
+credentials:
+  default:
+    api_key_id: "${{ secrets.VERACODE_API_ID }}"
+    api_key_secret: "${{ secrets.VERACODE_API_KEY }}"
+CREDS
+          echo "Credentials file written."
 
       # ── 6. Static scan (SAST) ──────────────────────────────────────────────
       - name: Run Veracode Static Scan
@@ -60,15 +61,18 @@ jobs:
         continue-on-error: true
         run: |
           veracode static scan app/target/verademo.war \
-            --results-file pipeline-results.json
-
+            --results-file pipeline-results.json          echo "Scan exit code: $?"
+          ls -la pipeline-results.json 2>/dev/null || echo "WARNING: pipeline-results.json not created"
       # ── 7. Verificar que hay resultados ────────────────────────────────────
       - name: Check scan results exist
         run: |
           if [ ! -f pipeline-results.json ]; then
-            echo "pipeline-results.json not found – scan may have failed"
+            echo "pipeline-results.json not found."
+            echo "Check that VERACODE_API_ID and VERACODE_API_KEY secrets are configured in the repo."
+            echo "Go to: Settings -> Secrets and variables -> Actions"
             exit 1
           fi
+          echo "Scan results found. Size: $(wc -c < pipeline-results.json) bytes"
           JAVA_ISSUES=$(python3 - <<'EOF'
           import json, sys
           with open("pipeline-results.json") as f:
