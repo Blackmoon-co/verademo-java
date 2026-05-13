@@ -44,14 +44,13 @@ jobs:
 
       # ── 5. Configurar credenciales Veracode ───────────────────────────────
       - name: Configure Veracode credentials
+        env:
+          API_ID: ${{ secrets.VERACODE_API_ID }}
+          API_KEY: ${{ secrets.VERACODE_API_KEY }}
         run: |
           mkdir -p ~/.veracode
-          cat > ~/.veracode/credentials << 'CREDS'
-credentials:
-  default:
-    api_key_id: "${{ secrets.VERACODE_API_ID }}"
-    api_key_secret: "${{ secrets.VERACODE_API_KEY }}"
-CREDS
+          printf 'credentials:\n  default:\n    api_key_id: "%s"\n    api_key_secret: "%s"\n' \
+            "${API_ID}" "${API_KEY}" > ~/.veracode/credentials
           echo "Credentials file written."
 
       # ── 6. Static scan (SAST) ──────────────────────────────────────────────
@@ -61,7 +60,8 @@ CREDS
         continue-on-error: true
         run: |
           veracode static scan app/target/verademo.war \
-            --results-file pipeline-results.json          echo "Scan exit code: $?"
+            --results-file pipeline-results.json
+          echo "Scan exit code: $?"
           ls -la pipeline-results.json 2>/dev/null || echo "WARNING: pipeline-results.json not created"
       # ── 7. Verificar que hay resultados ────────────────────────────────────
       - name: Check scan results exist
