@@ -15,11 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import java.io.ObjectInputFilter;
 
 public class UserFactory {
 	private static final String COOKIE_NAME = "user";
 
 	private static final Logger logger = LogManager.getLogger("VeraDemo:UserFactory");
+private static ObjectInputFilter getObjectInputFilter(){
+        return ObjectInputFilter.Config.createFilter("safe.example.Class;safe.example.package.and.subpackages.**;!*");
+    }
 
 	public static User createFromRequest(HttpServletRequest req) {
 		Cookie cookie = getCookieFromRequestByName(req, COOKIE_NAME);
@@ -40,6 +44,7 @@ public class UserFactory {
 		try {
 			/* START EXAMPLE VULNERABILITY */
 			in = new ObjectInputStream(decodedstream);
+in.setObjectInputFilter(getObjectInputFilter());
 			User user = (User) in.readObject();
 			in.close();
 			/* END EXAMPLE VULNERABILITY */

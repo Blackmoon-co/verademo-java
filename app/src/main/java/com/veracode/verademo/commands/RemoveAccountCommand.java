@@ -36,10 +36,12 @@ public class RemoveAccountCommand implements BlabberCommand {
 			action.setString(2, blabberUsername);
 			action.execute();
 
-			sqlQuery = "SELECT blab_name FROM users WHERE username = '" + blabberUsername + "'";
 			Statement sqlStatement = connect.createStatement();
-			logger.info(sqlQuery);
-			ResultSet result = sqlStatement.executeQuery(sqlQuery);
+sqlQuery = "SELECT blab_name FROM users WHERE username = ?";
+PreparedStatement sqlStatement2 = connect.prepareStatement(sqlQuery);
+sqlStatement2.setString(1, blabberUsername);
+logger.info(sqlQuery);
+ResultSet result = sqlStatement2.executeQuery();
 			result.next();
 
 			/* START EXAMPLE VULNERABILITY */
